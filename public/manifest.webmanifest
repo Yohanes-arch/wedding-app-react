@@ -1,0 +1,19 @@
+{
+  "name": "Wedding Planner",
+  "short_name": "Wedding",
+  "description": "Wedding planning and expense tracker.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F7F2E8",
+  "theme_color": "#7D9A83",
+  "icons": [
+    {
+      "src": "/app-icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
