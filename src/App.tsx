@@ -1091,7 +1091,7 @@ type FormProps = {
 function Onboarding({ user, onComplete }: { user: User; onComplete: () => Promise<void> }) {
   const [groomName, setGroomName] = useState('');
   const [brideName, setBrideName] = useState('');
-  const [weddingDate, setWeddingDate] = useState('2026-12-12');
+  const [weddingDate, setWeddingDate] = useState('');
   const [city, setCity] = useState('');
   const [guestEstimate, setGuestEstimate] = useState('300');
   const [targetAmount, setTargetAmount] = useState('');
@@ -1104,6 +1104,7 @@ function Onboarding({ user, onComplete }: { user: User; onComplete: () => Promis
     setSaving(true);
     setError(null);
     try {
+      if (!weddingDate) throw new Error('Tanggal wedding wajib dipilih.');
       const api = requireSupabase();
       const { error: profileError } = await api.from('wedding_profiles').insert({
         user_id: user.id,
@@ -1137,7 +1138,7 @@ function Onboarding({ user, onComplete }: { user: User; onComplete: () => Promis
         </div>
         <TextField label="Nama mempelai pria" value={groomName} onChange={setGroomName} required />
         <TextField label="Nama mempelai wanita" value={brideName} onChange={setBrideName} required />
-        <DateField label="Tanggal wedding" value={weddingDate} onChange={setWeddingDate} />
+        <DateField label="Tanggal wedding" value={weddingDate} onChange={setWeddingDate} required />
         <TextField label="Kota" value={city} onChange={setCity} />
         <TextField label="Estimasi tamu" value={guestEstimate} onChange={setGuestEstimate} inputMode="numeric" />
         <TextField label="Target total biaya opsional" value={targetAmount} onChange={setTargetAmount} inputMode="numeric" />
@@ -1624,11 +1625,11 @@ function TextField({
   );
 }
 
-function DateField({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) {
+function DateField({ label, value, onChange, required = false }: { label: string; value: string; onChange: (value: string) => void; required?: boolean }) {
   return (
     <label className="field">
       <span>{label}</span>
-      <input type="date" value={value} onChange={(event) => onChange(event.target.value)} />
+      <input type="date" value={value} onChange={(event) => onChange(event.target.value)} required={required} />
     </label>
   );
 }
